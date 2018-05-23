@@ -32,7 +32,7 @@ class App extends Component {
   }
 
   deleteEntry(entry){
-    this.setState({entries: this.state.entries.filter(e => e === entry)});
+    this.setState({entries: this.state.entries.filter(e => e !== entry)});
   }
 
   clearEntries(){
@@ -43,7 +43,7 @@ class App extends Component {
     var lines = ['checkin'];
     var entries = this.state.entries;
     for (var i in entries){
-      if (i === entries.length - 1) break;
+      if (+i === entries.length - 1) break;
       var e = entries[i];
       if (!e.project.startsWith('#')) continue;
       var duration = ((entries[+i+1].startTime - e.startTime) / 360000).toFixed(2);
@@ -85,20 +85,22 @@ class App extends Component {
             </button>
           </h3>
           <table>
-            {this.state.entries.map(e => {
-              return (
-                <tr>
-                  <td>{e.project}</td>
-                  <td>{e.tasks}</td>
-                  <td>{new Date(e.startTime).toString().split(' ')[4]}</td>
-                  <td>
-                    <button className="delete" timestamp={e.startTime} onClick={e => this.deleteEntry(e)}>
-                      X
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
+            <tbody>
+              {this.state.entries.map(e => {
+                return (
+                  <tr key={e.startTime}>
+                    <td>{e.project}</td>
+                    <td>{e.tasks}</td>
+                    <td>{new Date(e.startTime).toString().split(' ')[4]}</td>
+                    <td>
+                      <button className="delete" timestamp={e.startTime} onClick={_ => this.deleteEntry(e)}>
+                        X
+                      </button>
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
           </table>
         </div>
 

@@ -1,28 +1,29 @@
-.App {
-  text-align: center;
+* {
+  font-family: 'Arial';
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+table {
+  border: 1px solid black;
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
+td {
+  width: 200px;
 }
 
-.App-title {
-  font-size: 1.5em;
+tr:hover {
+  background: #EEE;
 }
 
-.App-intro {
-  font-size: large;
+input {
+  width: 300px;
 }
 
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+button.delete {
+  cursor: pointer;
+  float: right;
+}
+
+textarea {
+  width: 500px;
+  height: 300px;
 }

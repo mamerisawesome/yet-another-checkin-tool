@@ -12,6 +12,10 @@ class App extends Component {
     localStorage.state = JSON.stringify(this.state);
   }
 
+  componentDidMount(){
+    setInterval(this.save.bind(this), 1000);
+  }
+
   addEntry(){
 
     var {project, tasks} = this.refs;

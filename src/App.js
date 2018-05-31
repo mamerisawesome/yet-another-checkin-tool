@@ -1,11 +1,17 @@
 import React, { Component } from 'react';
 import './App.css';
 
+function assoc(obj, k, v){
+  var o = Object.assign(obj, {});
+  o[k] = v;
+  return o;
+}
+
 class App extends Component {
 
   constructor(props){
     super(props);
-    this.state = JSON.parse(localStorage.getItem('state')) || {entries: []};
+    this.state = JSON.parse(localStorage.getItem('state')) || {entries: {}};
   }
 
   save(){
@@ -20,37 +26,53 @@ class App extends Component {
 
     var {project, tasks} = this.refs;
 
-    var newEntry = {
+    var [date, time] = new Date().toISOString().split('T');
+    var [hour, minute] =  time.split(':');
+
+    var id = Date.now();
+    var entry = {
       project: project.value,
       tasks: tasks.value,
-      startTime: Date.now()
+      date: date,
+      hour: hour,
+      minute: minute,
+      id: id
     };
 
-    this.setState({
-      entries: this.state.entries.concat([newEntry]),
-    });
+    this.setState(assoc(this.state, 'entries', assoc(this.state.entries, id, entry)));
 
     project.value = null;
     tasks.value = null;
 
   }
 
-  deleteEntry(entry){
-    this.setState({entries: this.state.entries.filter(e => e !== entry)});
+  updateEntry(id, k, v){
+    var entry = assoc(this.state.entries[id], k, v);
+    this.setState({entries: assoc(this.state.entries, id, entry)});
+  }
+
+  deleteEntry(id){
+    var entries = Object.assign(this.state.entries, {});
+    delete entries[id];
+    this.setState({entries: entries});
   }
 
   clearEntries(){
-    this.setState({entries: []});
+    this.setState({entries: {}});
+  }
+
+  getStartTime(entry){
+    return new Date(entry.date + ' ' + entry.hour + ':' + entry.minute).getTime();
   }
 
   output(){
     var lines = ['checkin'];
-    var entries = this.state.entries;
+    var entries = this.sortedEntries();
     for (var i in entries){
       if (+i === entries.length - 1) break;
       var e = entries[i];
       if (!e.project.startsWith('#')) continue;
-      var duration = ((entries[+i+1].startTime - e.startTime) / 360000).toFixed(2);
+      var duration = ((this.getStartTime(entries[+i+1]) - this.getStartTime(e)) / 360000).toFixed(2);
       var line = ['-', duration, 'hrs', e.project, e.tasks].join(' ');
       lines.push(line);
     }
@@ -62,6 +84,12 @@ class App extends Component {
       this.addEntry();
       this.refs.project.focus();
     }
+  }
+
+  sortedEntries(){
+    return Object.values(this.state.entries).sort((x, y) => {
+      return this.getStartTime(x) - this.getStartTime(y);
+    });
   }
 
   render() {
@@ -90,14 +118,18 @@ class App extends Component {
           </h3>
           <table>
             <tbody>
-              {this.state.entries.map(e => {
+              {this.sortedEntries().map(e => {
                 return (
-                  <tr key={e.startTime}>
-                    <td>{e.project}</td>
-                    <td>{e.tasks}</td>
-                    <td>{new Date(e.startTime).toString().split(' ')[4]}</td>
+                  <tr key={e.id}>
+                    {['project', 'tasks', 'date', 'hour', 'minute'].map(field => {
+                      return (
+                        <td key={field}>
+                          <input value={e[field]} onChange={ev => this.updateEntry(e.id, field, ev.target.value)}/>
+                        </td>
+                      )
+                    })}
                     <td>
-                      <button className="delete" timestamp={e.startTime} onClick={_ => this.deleteEntry(e)}>
+                      <button className="delete" onClick={_ => this.deleteEntry(e.id)}>
                         X
                       </button>
                     </td>

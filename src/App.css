@@ -10,16 +10,20 @@ table {
   border: 1px solid black;
 }
 
-td {
-  width: 200px;
+input {
+  width: 300px;
 }
 
 tr:hover {
   background: #EEE;
 }
 
-input {
-  width: 300px;
+td, td > input {
+  width: 100px;
+}
+
+td:last-child {
+  width: 30px;
 }
 
 button.delete {

@@ -74,7 +74,7 @@ class App extends Component {
       if (+i === entries.length - 1) break;
       var e = entries[i];
       if (!e.project.startsWith('#')) continue;
-      var duration = ((this.getStartTime(entries[+i+1]) - this.getStartTime(e)) / 360000).toFixed(2);
+      var duration = ((this.getStartTime(entries[+i+1]) - this.getStartTime(e)) / 3600000).toFixed(2);
       var line = ['-', duration, 'hrs', e.project, e.tasks].join(' ');
       lines.push(line);
     }

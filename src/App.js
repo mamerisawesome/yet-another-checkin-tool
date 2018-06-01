@@ -26,8 +26,10 @@ class App extends Component {
 
     var {project, tasks} = this.refs;
 
-    var [date, time] = new Date().toISOString().split('T');
-    var [hour, minute] =  time.split(':');
+    var now = new Date();
+    var date = now.toISOString().split('T')[0];
+    var hour = now.getHours();
+    var minute = now.getMinutes();
 
     var id = Date.now();
     var entry = {

@@ -106,6 +106,18 @@ class App extends Component {
     this.setState(JSON.parse(window.prompt('Enter state here:')));
   }
 
+  totalHours(){
+    var total = 0;
+    var entries = this.sortedEntries();
+    for (var i in entries){
+      if (+i === entries.length - 1) break;
+      var e = entries[i];
+      if (!e.project.startsWith('#')) continue;
+      total += (this.getStartTime(entries[+i+1]) - this.getStartTime(e)) / 3600000;
+    }
+    return total.toFixed(2);
+  }
+
   render() {
     return (
       <div>
@@ -155,7 +167,7 @@ class App extends Component {
         </div>
 
         <div>
-          <h3>Output</h3>
+          <h3>Output [{this.totalHours()} hrs total]</h3>
           <textarea value={this.output()} readOnly></textarea>
         </div>
 

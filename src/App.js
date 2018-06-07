@@ -94,6 +94,14 @@ class App extends Component {
     });
   }
 
+  export(){
+    var target = this.refs.export;
+    target.focus();
+    target.setSelectionRange(0, target.value.length);
+    document.execCommand("copy");
+    alert('Copied to clipboard!');
+  }
+
   render() {
     return (
       <div>
@@ -146,6 +154,10 @@ class App extends Component {
           <h3>Output</h3>
           <textarea value={this.output()} readOnly></textarea>
         </div>
+
+        <textarea id="export" ref="export" value={JSON.stringify(this.state)}/>
+        <button onClick={e => this.export()}>Export</button>
+        <button onClick={e => this.import()}>Import</button>
 
       </div>
     );

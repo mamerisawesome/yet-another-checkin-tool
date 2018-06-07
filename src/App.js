@@ -102,6 +102,10 @@ class App extends Component {
     alert('Copied to clipboard!');
   }
 
+  import(){
+    this.setState(JSON.parse(window.prompt('Enter state here:')));
+  }
+
   render() {
     return (
       <div>

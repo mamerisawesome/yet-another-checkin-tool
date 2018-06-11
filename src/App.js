@@ -12,6 +12,12 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = JSON.parse(localStorage.getItem('state')) || {entries: {}};
+    this.state.now = new Date();
+    setInterval(_ => this.tick(), 100);
+  }
+
+  tick(){
+    this.setState({now: new Date()});
   }
 
   save(){
@@ -26,7 +32,7 @@ class App extends Component {
 
     var {project, tasks} = this.refs;
 
-    var now = new Date();
+    var now = this.state.now;
     var date = now.toISOString().split('T')[0];
     var hour = now.getHours();
     var minute = now.getMinutes();
@@ -115,7 +121,34 @@ class App extends Component {
       if (!e.project.startsWith('#')) continue;
       total += (this.getStartTime(entries[+i+1]) - this.getStartTime(e)) / 3600000;
     }
-    return total.toFixed(2);
+    return total;
+  }
+
+  pendingHours(){
+    var lastEntry = this.sortedEntries().pop();
+    if (lastEntry.project.startsWith('#')){
+      return (this.state.now.getTime() - this.getStartTime(lastEntry)) / 3600000;
+    } else {
+      return 0;
+    }
+  }
+
+  runningHours(){
+    return this.totalHours() + this.pendingHours();
+  }
+
+  targetMet(){
+    var met = this.runningHours() >= 8;
+    if (this.state.met !== met){
+      this.setState({met});
+      if (met) this.celebrate();
+    }
+    return met;
+  }
+
+  celebrate(){
+    (new Audio('http://syk0saje.com/junk/alvot/audio/annyeong.mp3')).play();
+    alert("You've logged 8 hours today! \\o/ Go buy some drugs!");
   }
 
   render() {
@@ -167,13 +200,22 @@ class App extends Component {
         </div>
 
         <div>
-          <h3>Output [{this.totalHours()} hrs total]</h3>
+          <h3>
+            Output [{this.totalHours().toFixed(2)} hrs total
+            going on <span style={{color: this.targetMet() ? 'green' : '#000'}}>{this.runningHours().toFixed(4)}</span>]
+          </h3>
           <textarea value={this.output()} readOnly></textarea>
         </div>
 
-        <textarea id="export" ref="export" value={JSON.stringify(this.state)}/>
+        <textarea id="export" ref="export" value={JSON.stringify(this.state)} readOnly/>
         <button onClick={e => this.export()}>Export</button>
         <button onClick={e => this.import()}>Import</button>
+
+        {
+          this.state.met ?
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/RXQCrOEx1-g?start=30&autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+          : null
+        }
 
       </div>
     );

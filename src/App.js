@@ -79,7 +79,7 @@ class App extends Component {
     for (var i in entries){
       if (+i === entries.length - 1) break;
       var e = entries[i];
-      if (!e.project.startsWith('#')) continue;
+      if (!this.isLogged(e)) continue;
       var duration = ((this.getStartTime(entries[+i+1]) - this.getStartTime(e)) / 3600000).toFixed(2);
       var line = ['-', duration, 'hrs', e.project, e.tasks].join(' ');
       lines.push(line);
@@ -112,13 +112,17 @@ class App extends Component {
     this.setState(JSON.parse(window.prompt('Enter state here:')));
   }
 
+  isLogged(entry){
+    return entry && entry.project.startsWith('#');
+  }
+
   totalHours(){
     var total = 0;
     var entries = this.sortedEntries();
     for (var i in entries){
       if (+i === entries.length - 1) break;
       var e = entries[i];
-      if (!e.project.startsWith('#')) continue;
+      if (!this.isLogged(e)) continue;
       total += (this.getStartTime(entries[+i+1]) - this.getStartTime(e)) / 3600000;
     }
     return total;
@@ -126,7 +130,7 @@ class App extends Component {
 
   pendingHours(){
     var lastEntry = this.sortedEntries().pop();
-    if (lastEntry.project.startsWith('#')){
+    if (this.isLogged(lastEntry)){
       return (this.state.now.getTime() - this.getStartTime(lastEntry)) / 3600000;
     } else {
       return 0;

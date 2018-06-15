@@ -66,7 +66,9 @@ class App extends Component {
   }
 
   clearEntries(){
-    this.setState({entries: {}});
+    if (window.confirm('Are you sure you want to clear all entries? You cannot undo this!')){
+      this.setState({entries: {}});
+    }
   }
 
   getStartTime(entry){

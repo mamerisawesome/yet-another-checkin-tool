@@ -154,7 +154,7 @@ class App extends Component {
 
   celebrate(){
     (new Audio('http://syk0saje.com/junk/alvot/audio/annyeong.mp3')).play();
-    alert("You've logged 8 hours today! \\o/ Go buy some drugs!");
+    // alert("You've logged 8 hours today! \\o/ Go buy some drugs!");
   }
 
   render() {

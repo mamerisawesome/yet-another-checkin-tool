@@ -8,15 +8,26 @@ function assoc (obj, k, v) {
 }
 
 class App extends Component {
+
+  adjustForTimezone(date:Date):Date {
+    var timeOffsetInMS:number = date.getTimezoneOffset() * 60000;
+    date.setTime(date.getTime() - timeOffsetInMS);
+    return date
+  }
+
   constructor (props) {
     super(props)
     this.state = JSON.parse(localStorage.getItem('state')) || {entries: {}}
-    this.state.now = new Date()
+    this.state.now = this.getNow()
     setInterval(_ => this.tick(), 100)
   }
 
+  getNow(){
+    return this.adjustForTimezone(new Date())
+  }
+
   tick () {
-    this.setState({now: new Date()})
+    this.setState({now: this.getNow()})
   }
 
   save () {
@@ -31,18 +42,17 @@ class App extends Component {
     var {project, tasks} = this.refs
 
     var now = this.state.now
-    var date = now.toISOString().split('T')[0]
-    var hour = now.getHours()
-    var minute = now.getMinutes()
+    var [date, time] = now.toISOString().split('T')
+    var [hour, minute] = time.split(':')
 
     var id = Date.now()
     var entry = {
       project: project.value,
       tasks: tasks.value,
-      date: date,
-      hour: hour,
-      minute: minute,
-      id: id
+      date,
+      hour,
+      minute,
+      id
     }
 
     this.setState(assoc(this.state, 'entries', assoc(this.state.entries, id, entry)))
@@ -69,7 +79,7 @@ class App extends Component {
   }
 
   getStartTime (entry) {
-    return new Date(entry.date + ' ' + entry.hour + ':' + entry.minute).getTime()
+    return this.adjustForTimezone(new Date(entry.date + ' ' + entry.hour + ':' + entry.minute)).getTime()
   }
 
   output () {
@@ -150,7 +160,7 @@ class App extends Component {
   }
 
   celebrate () {
-    (new Audio('http://syk0saje.com/junk/alvot/audio/annyeong.mp3')).play()
+    (new Audio('https://syk0saje.gitlab.io/junk/alvot/audio/annyeong.mp3')).play()
     // alert("You've logged 8 hours today! \\o/ Go buy some drugs!");
   }
 
@@ -215,8 +225,8 @@ class App extends Component {
         <button onClick={e => this.import()}>Import</button>
 
         {
-          this.state.met
-            ? <iframe title='drugz' width='560' height='315' src='https://www.youtube.com/embed/RXQCrOEx1-g?start=30&autoplay=1' frameborder='0' allow='autoplay; encrypted-media' allowfullscreen />
+          this.targetMet()
+            ? <iframe title='drugz' width='560' height='315' src='https://www.youtube.com/embed/RXQCrOEx1-g?start=30&autoplay=1' frameBorder='0' allow='autoplay; encrypted-media' allowFullScreen />
             : null
         }
 

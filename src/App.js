@@ -83,8 +83,11 @@ class App extends Component {
   }
 
   output () {
-    var lines = ['checkin']
-    var entries = this.sortedEntries()
+    const lines = []
+    const entries = this.sortedEntries()
+    const date = entries.length ? entries[0].date : ''
+    const header = `checkin ${date}`
+    lines.push(header)
     for (var i in entries) {
       if (+i === entries.length - 1) break
       var e = entries[i]

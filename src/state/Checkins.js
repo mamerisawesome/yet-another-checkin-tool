@@ -1,27 +1,8 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState } from 'react'
 import { createContainer } from "unstated-next"
+import { useInterval } from './hooks'
 
-export const useInterval = (callback, delay) => {
-  const savedCallback = useRef();
-
-  // Remember the latest callback.
-  useEffect(() => {
-    savedCallback.current = callback;
-  }, [callback]);
-
-  // Set up the interval.
-  useEffect(() => {
-    function tick() {
-      savedCallback.current();
-    }
-    if (delay !== null) {
-      const id = setInterval(tick, delay);
-      return () => clearInterval(id);
-    }
-  }, [delay]);
-};
-
-const State = createContainer(() => {
+const Checkins = createContainer(() => {
 
   const adjustForTimezone = (date:Date):Date => {
     const timeOffsetInMS:number = date.getTimezoneOffset() * 60000;
@@ -107,4 +88,4 @@ const State = createContainer(() => {
 
 })
 
-export default State
+export default Checkins

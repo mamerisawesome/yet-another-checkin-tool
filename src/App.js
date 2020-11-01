@@ -1,11 +1,16 @@
 import React from 'react'
 import './App.css'
+
+import Goals from "./state/Goals";
+import Checkins from "./state/Checkins";
+
 import Main from "./Main";
-import State from "./State";
 
 const App = () =>
-  <State.Provider>
-    <Main />
-  </State.Provider>
+  <Goals.Provider>
+    <Checkins.Provider>
+      <Main />
+    </Checkins.Provider>
+  </Goals.Provider>
 
 export default App

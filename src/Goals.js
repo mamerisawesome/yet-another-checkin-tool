@@ -1,35 +1,21 @@
 import React from 'react'
 
+import State from './state/Goals'
+
 const Goals = () => {
+
+  const {
+    baseHours,
+    setBaseHours,
+    goalsStr,
+    setGoalsStr
+  } = State.useContainer()
+
   return <div>
     <div>Base hours:</div>
-    <input value={40}/>
+    <input value={baseHours} onChange={setBaseHours} type="number" min="0" step="1" />
     <div>Input goals:</div>
-    <textarea />
-    <div>Status:</div>
-    <table>
-      <tr>
-        <th>Goal</th>
-        <th>Bar</th>
-        <th>Actual hours</th>
-        <th>Target hours</th>
-        <th>% rendered</th>
-      </tr>
-      <tr>
-        <td>work</td>
-        <td>[|||||||||.]</td>
-        <td>9</td>
-        <td>10</td>
-        <td>90</td>
-      </tr>
-      <tr>
-        <td>work2</td>
-        <td>[|||||||...]</td>
-        <td>7</td>
-        <td>10</td>
-        <td>70</td>
-      </tr>
-    </table>
+    <textarea value={goalsStr} onChange={setGoalsStr} />
   </div>
 }
 

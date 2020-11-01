@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 
-import State from "./State";
+import State from "./state/Checkins";
 
 const Checkins = () => {
 

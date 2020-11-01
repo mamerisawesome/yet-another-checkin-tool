@@ -25,7 +25,7 @@ const Tabs = ({tabs, current, setCurrent, className}) => {
   return <div className={className}>
     <div className="options">
       {Object.keys(tabs).map(tab => (
-        <TabOption label={tab}
+        <TabOption key={tab} label={tab}
           isCurrent={tab === current}
           onClick={() => setCurrent(tab)}/>
       ))}

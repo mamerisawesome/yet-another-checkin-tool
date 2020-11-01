@@ -5,7 +5,9 @@ import Checkins from './state/Checkins'
 
 const Dashboard = () => {
 
-  const goals = Goals.useContainer()
+  const {
+    goals
+  } = Goals.useContainer()
   const checkins = Checkins.useContainer()
 
   return (
@@ -17,20 +19,15 @@ const Dashboard = () => {
         <th>Target hours</th>
         <th>% rendered</th>
       </tr>
-      <tr>
-        <td>work</td>
-        <td>[|||||||||.]</td>
-        <td>9</td>
-        <td>10</td>
-        <td>90</td>
-      </tr>
-      <tr>
-        <td>work2</td>
-        <td>[|||||||...]</td>
-        <td>7</td>
-        <td>10</td>
-        <td>70</td>
-      </tr>
+      {goals().map(goal => (
+        <tr key={goal}>
+          <td>{goal.project}</td>
+          <td>[|||||.....]</td>
+          <td>N</td>
+          <td>{goal.targetHrs}</td>
+          <td>N%</td>
+        </tr>
+      ))}
     </table>
   )
 }

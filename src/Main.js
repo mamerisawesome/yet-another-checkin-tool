@@ -8,7 +8,7 @@ import Dashboard from "./Dashboard";
 
 const Main = () => {
 
-  const [currentTab, setCurrentTab] = useState('goals')
+  const [currentTab, setCurrentTab] = useState('dashboard')
 
   return <Tabs tabs={{
     'goals': Goals,

@@ -7,7 +7,7 @@ import Goals from "./Goals";
 
 const Main = () => {
 
-  const [currentTab, setCurrentTab] = useState('checkins')
+  const [currentTab, setCurrentTab] = useState('goals')
 
   return <Tabs tabs={{
     'goals': Goals,

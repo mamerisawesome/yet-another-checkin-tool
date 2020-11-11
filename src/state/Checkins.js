@@ -13,11 +13,34 @@ const Checkins = createContainer(() => {
   const getNow = () => adjustForTimezone(new Date())
   const [now, setNow] = useState(getNow())
 
+  const isDate = str => /\d{4}-\d{2}-\d{2}/.exec(str)
+
+  const timestampToWeek = timestamp => {
+    const [date, time] = new Date(parseInt(timestamp)).toISOString().split('T')
+    return date
+  }
+
+  const update = initState => {
+    const entryKeys = Object.keys(initState.entries)
+    if (entryKeys.length){
+      if (entryKeys.every(isDate)){
+        return initState
+      } else {
+        const week = timestampToWeek(entryKeys[0])
+        return {...initState, entries: {[week]: initState.entries}
+        }
+      }
+    } else {
+      return initState
+    }
+  }
+
   const getInitState = () => {
     const initState = JSON.parse(localStorage.getItem('state')) || {}
     initState.entries = initState.entries || {}
-    return initState
+    return update(initState)
   }
+
   const [state, setState] = useState(getInitState())
 
   const tick = () => setNow(getNow())

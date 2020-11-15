@@ -13,7 +13,11 @@ const Checkins = () => {
     isLogged,
     targetMet,
     runningHours,
-    now
+    now,
+    selectedDate,
+    selectToday,
+    backOneDay,
+    forwardOneDay
   } = State.useContainer();
 
   const projectRef = useRef()
@@ -97,6 +101,14 @@ const Checkins = () => {
 
   return (
     <div>
+
+      <div>
+        <h3>Selected Date</h3>
+        <button onClick={selectToday}>Today</button>
+        <button onClick={backOneDay}>&lt;</button>
+        {selectedDate}
+        <button onClick={forwardOneDay}>&gt;</button>
+      </div>
 
       <p>
         Make sure your project starts with #. Otherwise, the activity entry is treated as non-work (break, lunch, etc.)

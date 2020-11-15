@@ -4,20 +4,38 @@ import { useInterval } from './hooks'
 
 const Checkins = createContainer(() => {
 
+
   const adjustForTimezone = (date:Date):Date => {
     const timeOffsetInMS:number = date.getTimezoneOffset() * 60000;
     date.setTime(date.getTime() - timeOffsetInMS);
     return date
   }
 
+  const dateToDateStr = date => {
+    const [dateStr, timeStr] = date.toISOString().split('T')
+    return dateStr
+  }
+
   const getNow = () => adjustForTimezone(new Date())
   const [now, setNow] = useState(getNow())
+  const [selectedDate, setSelectedDate] = useState(dateToDateStr(now))
+
+  const selectToday = () => setSelectedDate(dateToDateStr(now))
+
+  const offsetSelectedDateBy = days => {
+    const date = new Date(selectedDate)
+    date.setDate(date.getDate() + days)
+    setSelectedDate(dateToDateStr(date))
+  }
+
+  const backOneDay = () => offsetSelectedDateBy(-1)
+  const forwardOneDay = () => offsetSelectedDateBy(1)
 
   const isDate = str => /\d{4}-\d{2}-\d{2}/.exec(str)
 
-  const timestampToWeek = timestamp => {
-    const [date, time] = new Date(parseInt(timestamp)).toISOString().split('T')
-    return date
+  const timestampToDateStr = timestamp => {
+    const date = new Date(parseInt(timestamp))
+    return dateToDateStr(date)
   }
 
   const update = initState => {
@@ -26,8 +44,8 @@ const Checkins = createContainer(() => {
       if (entryKeys.every(isDate)){
         return initState
       } else {
-        const week = timestampToWeek(entryKeys[0])
-        return {...initState, entries: {[week]: initState.entries}
+        const date = timestampToDateStr(entryKeys[0])
+        return {...initState, entries: {[date]: initState.entries}
         }
       }
     } else {
@@ -50,9 +68,11 @@ const Checkins = createContainer(() => {
   const getStartTime = (entry) =>
     adjustForTimezone(new Date(`${entry.date} ${entry.hour}:${entry.minute}`)).getTime()
 
-  const sortedEntries = () => (
-    Object.values(state.entries).sort((x, y) =>
-      getStartTime(x) - getStartTime(y)))
+  const sortedEntries = () => {
+    const entries = state.entries[selectedDate] || []
+    return Object.values(entries).sort((x, y) =>
+      getStartTime(x) - getStartTime(y))
+  }
 
   useInterval(tick, 100)
   useInterval(save, 1000)
@@ -97,6 +117,7 @@ const Checkins = createContainer(() => {
   }
 
   return {
+    selectedDate,
     now,
     state,
     setState,
@@ -106,7 +127,11 @@ const Checkins = createContainer(() => {
     pendingHours,
     isLogged,
     targetMet,
-    runningHours
+    runningHours,
+    selectedDate,
+    selectToday,
+    backOneDay,
+    forwardOneDay
   }
 
 })

@@ -17,14 +17,18 @@ const Checkins = () => {
     selectedDate,
     selectToday,
     backOneDay,
-    forwardOneDay
+    forwardOneDay,
+    addEntry,
+    updateEntry,
+    deleteEntry,
+    clearEntries
   } = State.useContainer();
 
   const projectRef = useRef()
   const tasksRef = useRef()
   const exportRef = useRef()
 
-  const addEntry = () => {
+  const addEntryAndClearInput = () => {
 
     const [date, time] = now.toISOString().split('T')
     const [hour, minute] = time.split(':')
@@ -39,27 +43,16 @@ const Checkins = () => {
       id
     }
 
-    setState({...state, entries: {...state.entries, [id]: entry}})
+    addEntry(entry)
 
     projectRef.current.value = null
     tasksRef.current.value = null
 
   }
 
-  const updateEntry = (id, k, v) => {
-    const entry = {...state.entries[id], [k]: v}
-    setState({entries: {...state.entries, [id]: entry}})
-  }
-
-  const deleteEntry = (id) => {
-    const entries = Object.assign(state.entries, {})
-    delete entries[id]
-    setState({entries: entries})
-  }
-
-  const clearEntries = () => {
-    if (window.confirm('Are you sure you want to clear all entries? You cannot undo this!')) {
-      setState({entries: {}})
+  const confirmClearEntries = () => {
+    if (window.confirm('Are you sure you want to clear all entries for this date? You cannot undo this!')) {
+      clearEntries()
     }
   }
 
@@ -82,7 +75,7 @@ const Checkins = () => {
 
   const handleKeyPress = (e) => {
     if (e.which === 13) {
-      addEntry()
+      addEntryAndClearInput()
       projectRef.current.focus()
     }
   }
@@ -124,7 +117,7 @@ const Checkins = () => {
       <div>
         <h3>
           Entries
-          <button onClick={e => clearEntries()}>
+          <button onClick={confirmClearEntries}>
             Clear
           </button>
         </h3>

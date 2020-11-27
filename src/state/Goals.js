@@ -35,13 +35,24 @@ const Goals = createContainer(() => {
 
   }
 
+  const adjustSelectedWeek = weeks => {
+    const newDate = new Date(selectedWeek)
+    newDate.setDate(newDate.getDate() + (7 * weeks))
+    setSelectedWeek(newDate.toISOString().split("T")[0])
+  }
+
+  const backOneWeek = () => adjustSelectedWeek(-1)
+  const forwardOneWeek = () => adjustSelectedWeek(1)
+
   return {
     baseHours,
     setBaseHours,
     goalsStr,
     setGoalsStr,
     goals,
-    selectedWeek
+    selectedWeek,
+    backOneWeek,
+    forwardOneWeek,
   }
 
 })

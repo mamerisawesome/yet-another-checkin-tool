@@ -6,10 +6,19 @@ import Checkins from './state/Checkins'
 const Dashboard = () => {
 
   const {goals, selectedWeek} = Goals.useContainer()
-  const checkins = Checkins.useContainer()
+  const {entries, getStartTime} = Checkins.useContainer()
 
   const getBar = goal => {
-    return '[|||||.....]'
+    const actualHours = getActualHours(goal)
+    const {targetHrs} = goal
+
+    return (
+      <div style={{width: (10 * targetHrs), backgroundColor: 'white', border: '1px solid black'}}>
+        <div style={{width: (10 * actualHours), backgroundColor: 'orange'}}>
+          {getPercentRendered(goal)}%
+        </div>
+      </div>
+    )
   }
 
   const getWeekDates = week => {
@@ -22,9 +31,8 @@ const Dashboard = () => {
     return dates
   }
 
-  const getWeekCheckins = (selectedWeek, checkins) => {
+  const getWeekCheckins = selectedWeek => {
     const dates = getWeekDates(selectedWeek)
-    const {entries} = checkins
     let results = []
     for (const date of dates){
       if (entries[date]){
@@ -35,8 +43,21 @@ const Dashboard = () => {
   }
 
   const getActualHours = goal => {
-    const weekCheckins = getWeekCheckins(selectedWeek, checkins)
-    return 'N'
+    const weekCheckins = getWeekCheckins(selectedWeek)
+    let total = 0
+    for (let i in weekCheckins){
+      const entry = weekCheckins[i][1]
+      if (entry.project === goal.project){
+        total += (getStartTime(weekCheckins[+i + 1][1]) - getStartTime(entry)) / 3600000
+      }
+    }
+    return total
+  }
+
+  const getPercentRendered = goal => {
+    const actualHours = getActualHours(goal)
+    const {targetHrs} = goal
+    return actualHours / targetHrs * 100
   }
 
   return (
@@ -44,18 +65,16 @@ const Dashboard = () => {
       <tbody>
         <tr>
           <th>Goal</th>
-          <th>Bar</th>
           <th>Actual hours</th>
           <th>Target hours</th>
-          <th>% rendered</th>
+          <th>Bar</th>
         </tr>
         {goals().map(goal => (
           <tr key={goal.project}>
             <td>{goal.project}</td>
-            <td>{getBar(goal)}</td>
             <td>{getActualHours(goal)}</td>
             <td>{goal.targetHrs}</td>
-            <td>N%</td>
+            <td>{getBar(goal)}</td>
           </tr>
         ))}
       </tbody>

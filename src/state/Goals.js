@@ -5,7 +5,7 @@ const Goals = createContainer(() => {
 
   const getCurrentWeek = () => {
     const tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
-    const date = new Date(Date.now() - tzoffset)
+    const date = new Date(Date.now() + tzoffset)
     const weekDay = date.getDay()
     const daysSinceLastMonday = (weekDay + 6) % 7
     date.setDate(date.getDate() - daysSinceLastMonday)

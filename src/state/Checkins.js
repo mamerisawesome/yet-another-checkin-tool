@@ -165,7 +165,8 @@ const Checkins = createContainer(() => {
     runningHours,
     selectToday,
     backOneDay,
-    forwardOneDay
+    forwardOneDay,
+    entries: state.entries,
   }
 
 })

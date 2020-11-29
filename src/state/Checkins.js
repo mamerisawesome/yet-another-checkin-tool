@@ -12,7 +12,7 @@ const Checkins = createContainer(() => {
   }
 
   const dateToDateStr = date => {
-    const [dateStr, timeStr] = date.toISOString().split('T')
+    const [dateStr] = date.toISOString().split('T')
     return dateStr
   }
 
@@ -34,7 +34,7 @@ const Checkins = createContainer(() => {
   const isDate = str => /\d{4}-\d{2}-\d{2}/.exec(str)
 
   const timestampToDateStr = timestamp => {
-    const date = new Date(parseInt(timestamp))
+    const date = new Date(parseInt(timestamp, 10))
     return dateToDateStr(date)
   }
 
@@ -117,7 +117,6 @@ const Checkins = createContainer(() => {
   }
 
   const addEntry = entry => {
-    const newState = state
     setState({
       ...state,
       entries: {
@@ -164,7 +163,6 @@ const Checkins = createContainer(() => {
     isLogged,
     targetMet,
     runningHours,
-    selectedDate,
     selectToday,
     backOneDay,
     forwardOneDay

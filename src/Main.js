@@ -8,7 +8,7 @@ import Dashboard from "./Dashboard";
 
 const Main = () => {
 
-  const DEFAULT_TAB = 'dashboard'
+  const DEFAULT_TAB = 'checkins'
   const [currentTab, setCurrentTab] = useState(DEFAULT_TAB)
 
   return <Tabs tabs={{

@@ -24,7 +24,7 @@ const Goals = () => {
     <div>Base hours:</div>
     <input value={baseHours} onChange={setBaseHours} type="number" min="0" step="1" />
     <div>Input goals:</div>
-    <textarea value={goalsStr} onChange={setGoalsStr} />
+    <textarea value={goalsStr} onChange={setGoalsStr} placeholder="Put here the bullet points of your weekly goals as sent by Heartbeat" />
   </div>
 }
 

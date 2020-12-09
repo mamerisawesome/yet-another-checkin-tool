@@ -6,7 +6,7 @@ import Checkins from './state/Checkins'
 const Dashboard = () => {
 
   const {goals, selectedWeek} = Goals.useContainer()
-  const {entries, getStartTime} = Checkins.useContainer()
+  const {entries, getStartTime, adjustForTimezone} = Checkins.useContainer()
 
   const getBar = goal => {
     const actualHours = getActualHours(goal)
@@ -48,16 +48,23 @@ const Dashboard = () => {
     for (let i in weekCheckins){
       const entry = weekCheckins[i][1]
       if (entry.project === goal.project){
-        total += (getStartTime(weekCheckins[+i + 1][1]) - getStartTime(entry)) / 3600000
+        const nextEntry = weekCheckins[+i + 1]
+        let endTime
+        if (nextEntry){
+          endTime = getStartTime(nextEntry[1])
+        } else {
+          endTime = adjustForTimezone(new Date()).getTime()
+        }
+        total += (endTime - getStartTime(entry)) / 3600000
       }
     }
-    return total
+    return total.toFixed(5)
   }
 
   const getPercentRendered = goal => {
     const actualHours = getActualHours(goal)
     const {targetHrs} = goal
-    return actualHours / targetHrs * 100
+    return (actualHours / targetHrs * 100).toFixed(2)
   }
 
   return (

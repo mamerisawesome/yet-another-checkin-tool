@@ -4,7 +4,6 @@ import { useInterval } from './hooks'
 
 const Checkins = createContainer(() => {
 
-
   const adjustForTimezone = (date:Date):Date => {
     const timeOffsetInMS:number = date.getTimezoneOffset() * 60000;
     date.setTime(date.getTime() - timeOffsetInMS);
@@ -167,6 +166,7 @@ const Checkins = createContainer(() => {
     backOneDay,
     forwardOneDay,
     entries: state.entries,
+    adjustForTimezone,
   }
 
 })

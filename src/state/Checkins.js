@@ -116,27 +116,19 @@ const Checkins = createContainer(() => {
   }
 
   const addEntry = entry => {
-    setState({
-      ...state,
-      entries: {
-        ...state.entries,
-        [selectedDate]: {
-          ...state.entries[selectedDate],
-          [entry.id]: entry
-        }
-      }
-    })
+    const newState = {...state}
+    state.entries[selectedDate][entry.id] = entry
+    setState(newState)
   }
 
   const updateEntry = (id, k, v) => {
-    const newState = state
-    const entry = {...state.entries[selectedDate][id], [k]: v}
-    state.entries[selectedDate][id] = entry
+    const newState = {...state}
+    state.entries[selectedDate][id][k] = v
     setState(newState)
   }
 
   const deleteEntry = (id) => {
-    const newState = state
+    const newState = {...state}
     delete newState.entries[selectedDate][id]
     setState(newState)
   }

@@ -117,6 +117,7 @@ const Checkins = createContainer(() => {
 
   const addEntry = entry => {
     const newState = {...state}
+    state.entries[selectedDate] = state.entries[selectedDate] || {}
     state.entries[selectedDate][entry.id] = entry
     setState(newState)
   }

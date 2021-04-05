@@ -1,6 +1,8 @@
-import React, { useRef } from 'react'
+import React, { useMemo, useRef } from 'react'
+import CreatableSelect from 'react-select/creatable';
 
-import State from "./state/Checkins";
+import CheckinsState from "./state/Checkins";
+import GoalsState from "./state/Goals";
 
 const Checkins = () => {
 
@@ -22,20 +24,34 @@ const Checkins = () => {
     updateEntry,
     deleteEntry,
     clearEntries
-  } = State.useContainer();
+  } = CheckinsState.useContainer()
+
+  const { goals, goalsStr, setGoalsStr } = GoalsState.useContainer()
+
+  // load the goals once and avoid state refresh
+  const currentGoals = useMemo(
+    () => goals().map(({ project }) => ({ label: project, value: project })),
+    [goals]
+  )
 
   const projectRef = useRef()
   const tasksRef = useRef()
   const exportRef = useRef()
 
+  const getInputRef = (sourceRef) => sourceRef.current.select.select.inputRef
+  const getSelectRef = (sourceRef) => sourceRef.current.select.props.value
+
   const addEntryAndClearInput = () => {
+
+    const selectProjectValue = getSelectRef(projectRef) && getSelectRef(projectRef).value
+    const projectValue = getInputRef(projectRef).value || selectProjectValue
 
     const [date, time] = now.toISOString().split('T')
     const [hour, minute] = time.split(':')
 
     const id = Date.now()
     const entry = {
-      project: projectRef.current.value,
+      project: projectValue,
       tasks: tasksRef.current.value,
       date,
       hour,
@@ -45,7 +61,10 @@ const Checkins = () => {
 
     addEntry(entry)
 
-    projectRef.current.value = null
+    if (getSelectRef(projectRef)) {
+      projectRef.current.select.onChange(null, { action: 'select-option' })
+    }
+    getInputRef(projectRef).value = null
     tasksRef.current.value = null
 
   }
@@ -92,6 +111,18 @@ const Checkins = () => {
     setState(JSON.parse(window.prompt('Enter state here:')))
   }
 
+  const createNewGoal = (newGoal) => {
+    if (newGoal[0] === '#') {
+      setGoalsStr({
+        target: { value: `${goalsStr}\n- 0% ${newGoal}` },
+      })
+      projectRef.current.select.onChange(
+        { label: newGoal, value: newGoal },
+        { action: 'select-option' }
+      )
+    }
+  }
+
   return (
 
     <div>
@@ -112,8 +143,18 @@ const Checkins = () => {
 
       <div>
         <h3>Input</h3>
-        <input ref={projectRef} placeholder='#project / out / break / lunch / whatever' onKeyPress={handleKeyPress} />
-        <input ref={tasksRef} placeholder='stuff, i, did (optional)' onKeyPress={handleKeyPress} />
+        <CreatableSelect
+          id='checkins-select'
+          styles={{ input: (styles) => ({ ...styles,  height: '20px' }) }}
+          options={currentGoals}
+          ref={projectRef}
+          onCreateOption={createNewGoal}
+          isValidNewOption={(inputVal) => inputVal[0] === '#'}
+          onKeyDown={(e) => getInputRef(projectRef).value[0] !== '#' && handleKeyPress(e)}
+          placeholder='#project / out / break / lunch / whatever'
+          formatCreateLabel={inputValue => `Enter "${inputValue}"`}
+        />
+        <input id='task-input' ref={tasksRef} placeholder='stuff, i, did (optional)' onKeyPress={handleKeyPress} />
         <span>(Press enter)</span>
       </div>
 
@@ -132,7 +173,7 @@ const Checkins = () => {
                   {['project', 'tasks', 'date', 'hour', 'minute'].map(field => {
                     return (
                       <td key={field}>
-                        <input value={e[field]} onChange={ev => updateEntry(e.id, field, ev.target.value)} />
+                        <input value={e[field] || ""} onChange={ev => updateEntry(e.id, field, ev.target.value)} />
                       </td>
                     )
                   })}

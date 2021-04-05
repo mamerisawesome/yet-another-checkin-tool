@@ -40,3 +40,14 @@ textarea {
   position: absolute;
   top: -10000px;
 }
+
+#checkins-select {
+  display: inline-block;
+  width: 350px;
+  font-size: 13px;
+}
+
+#task-input {
+  position: relative;
+  height: 30px;
+}

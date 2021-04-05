@@ -97,7 +97,7 @@ const Checkins = createContainer(() => {
     }
   }
 
-  const isLogged = entry => entry && entry.project.startsWith('#')
+  const isLogged = entry => entry && entry.project && entry.project.startsWith('#')
 
   const runningHours = () => totalHours() + pendingHours()
 

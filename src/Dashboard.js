@@ -5,8 +5,13 @@ import Checkins from './state/Checkins'
 
 const Dashboard = () => {
 
-  const {goals, selectedWeek} = Goals.useContainer()
-  const {entries, getStartTime, adjustForTimezone} = Checkins.useContainer()
+  const {getGoalMap, selectedWeek} = Goals.useContainer()
+  const {
+    entries,
+    getStartTime,
+    adjustForTimezone,
+    isLogged
+  } = Checkins.useContainer()
 
   const getBar = goal => {
     const actualHours = getActualHours(goal)
@@ -67,6 +72,13 @@ const Dashboard = () => {
     return (actualHours / targetHrs * 100).toFixed(2)
   }
 
+  const projectsWorkedOn = [...new Set(getWeekCheckins(selectedWeek).map(
+    ([_, entry]) => entry).filter(isLogged).map(_ => _.project))]
+
+  const asGoal = project => getGoalMap()[project] || {
+    project, targetHrs: 0, percentage: 0
+  }
+
   return (
     <div>
       <h1>Dashboard</h1>
@@ -80,7 +92,7 @@ const Dashboard = () => {
             <th>Remaining hours</th>
             <th>Bar</th>
           </tr>
-          {goals().map(goal => {
+          {projectsWorkedOn.map(asGoal).map(goal => {
             const actualHours = getActualHours(goal)
             const remainingHours = (goal.targetHrs - actualHours).toFixed(2)
             return (

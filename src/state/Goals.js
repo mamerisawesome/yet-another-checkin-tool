@@ -20,7 +20,7 @@ const Goals = createContainer(() => {
   const setBaseHours = e => _setBaseHours(localStorage.baseHours = e.target.value)
   const setGoalsStr = e => _setGoalsStr(localStorage.goals = e.target.value)
 
-  const goals = () => {
+  const getGoals = () => {
     const lines = goalsStr.split("\n")
     return lines.map(line => {
       const [percentStr, project] = line.split(" ").slice(1)
@@ -29,6 +29,9 @@ const Goals = createContainer(() => {
       return {project, targetHrs, percentage}
     }).sort((a, b) => b.targetHrs - a.targetHrs)
   }
+
+  const getGoalMap = () => Object.fromEntries(
+    getGoals().map(_ => [_.project, _]))
 
   const adjustSelectedWeek = weeks => {
     const newDate = new Date(selectedWeek)
@@ -44,10 +47,10 @@ const Goals = createContainer(() => {
     setBaseHours,
     goalsStr,
     setGoalsStr,
-    goals,
     selectedWeek,
     backOneWeek,
     forwardOneWeek,
+    getGoalMap
   }
 
 })

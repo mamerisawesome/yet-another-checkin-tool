@@ -1,22 +1,27 @@
-import React, {useState} from 'react'
+import React from 'react'
+import styled from "styled-components"
 import './App.css'
 
-import Tabs from "./Tabs";
 import Goals from "./Goals";
 import Checkins from "./Checkins";
 import Dashboard from "./Dashboard";
 
-const Main = () => {
+const Main = ({className}) => (
+  <div className={className}>
+    {[Goals, Checkins, Dashboard].map(Component => <Component />)}
+  </div>
+)
 
-  const DEFAULT_TAB = 'checkins'
-  const [currentTab, setCurrentTab] = useState(DEFAULT_TAB)
+export default styled(Main)`
+  display: flex;
+  padding: 5px;
+  border: 2px solid red;
+  border-radius: 5px;
 
-  return <Tabs tabs={{
-    'goals': Goals,
-    'checkins': Checkins,
-    'dashboard': Dashboard,
-  }} current={currentTab} setCurrent={setCurrentTab} />
-
-}
-
-export default Main
+  > div {
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid grey;
+    border-radius: 5px;
+  }
+`

@@ -68,30 +68,34 @@ const Dashboard = () => {
   }
 
   return (
-    <table>
-      <tbody>
-        <tr>
-          <th>Goal</th>
-          <th>Actual hours</th>
-          <th>Target hours</th>
-          <th>Remaining hours</th>
-          <th>Bar</th>
-        </tr>
-        {goals().map(goal => {
-          const actualHours = getActualHours(goal)
-          const remainingHours = (goal.targetHrs - actualHours).toFixed(2)
-          return (
-            <tr key={goal.project}>
-              <td>{goal.project}</td>
-              <td>{actualHours}</td>
-              <td>{goal.targetHrs}</td>
-              <td>{remainingHours}</td>
-              <td>{getBar(goal)}</td>
-            </tr>
-          )
-        })}
-      </tbody>
-    </table>
+    <div>
+      <h1>Dashboard</h1>
+      <p>This information is aggregated for the current week.</p>
+      <table>
+        <tbody>
+          <tr>
+            <th>Goal</th>
+            <th>Actual hours</th>
+            <th>Target hours</th>
+            <th>Remaining hours</th>
+            <th>Bar</th>
+          </tr>
+          {goals().map(goal => {
+            const actualHours = getActualHours(goal)
+            const remainingHours = (goal.targetHrs - actualHours).toFixed(2)
+            return (
+              <tr key={goal.project}>
+                <td>{goal.project}</td>
+                <td>{actualHours}</td>
+                <td>{goal.targetHrs}</td>
+                <td>{remainingHours}</td>
+                <td>{getBar(goal)}</td>
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
+    </div>
   )
 }
 

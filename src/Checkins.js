@@ -93,7 +93,10 @@ const Checkins = () => {
   }
 
   return (
+
     <div>
+
+      <h1>Checkins</h1>
 
       <div>
         <h3>Selected Date</h3>
@@ -164,6 +167,7 @@ const Checkins = () => {
       }
 
     </div>
+
   )
 }
 

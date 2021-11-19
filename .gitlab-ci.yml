@@ -1,4 +1,4 @@
-image: node:6.5.0 # can be upgraded, depending on your node version used
+image: node:6.14.0 # can be upgraded, depending on your node version used
 
 pages:
   cache:
@@ -14,5 +14,5 @@ pages:
   artifacts:
     paths:
     - public # mandatory, other folder won't work
-  only:
-  - master # or dev, the branch you want to publish
+  rules:
+  - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH

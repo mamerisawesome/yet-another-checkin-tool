@@ -50,7 +50,8 @@ const Goals = createContainer(() => {
     selectedWeek,
     backOneWeek,
     forwardOneWeek,
-    getGoalMap
+    getGoalMap,
+    getGoals
   }
 
 })

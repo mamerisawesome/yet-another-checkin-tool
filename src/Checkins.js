@@ -26,12 +26,12 @@ const Checkins = () => {
     clearEntries
   } = CheckinsState.useContainer()
 
-  const { goals, goalsStr, setGoalsStr } = GoalsState.useContainer()
+  const { getGoals, goalsStr, setGoalsStr } = GoalsState.useContainer()
 
   // load the goals once and avoid state refresh
   const currentGoals = useMemo(
-    () => goals().map(({ project }) => ({ label: project, value: project })),
-    [goals]
+    () => getGoals().map(({ project }) => ({ label: project, value: project })),
+    [getGoals()]
   )
 
   const projectRef = useRef()

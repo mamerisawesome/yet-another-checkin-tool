@@ -139,6 +139,11 @@ const Checkins = createContainer(() => {
     setState(state)
   }
 
+  const initShouldPlayAlert = [undefined, "true"].includes(localStorage.shouldPlayAlert)
+  const [shouldPlayAlert, _setShouldPlayAlert] = useState(initShouldPlayAlert)
+  const setShouldPlayAlert = v => _setShouldPlayAlert(localStorage.shouldPlayAlert = v)
+  const toggleShouldPlayAlert = () => setShouldPlayAlert(!shouldPlayAlert)
+
   return {
     addEntry,
     updateEntry,
@@ -160,6 +165,8 @@ const Checkins = createContainer(() => {
     forwardOneDay,
     entries: state.entries,
     adjustForTimezone,
+    shouldPlayAlert,
+    toggleShouldPlayAlert,
   }
 
 })

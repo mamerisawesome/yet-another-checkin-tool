@@ -23,7 +23,9 @@ const Checkins = () => {
     addEntry,
     updateEntry,
     deleteEntry,
-    clearEntries
+    clearEntries,
+    shouldPlayAlert,
+    toggleShouldPlayAlert,
   } = CheckinsState.useContainer()
 
   const { getGoals, goalsStr, setGoalsStr } = GoalsState.useContainer()
@@ -201,8 +203,15 @@ const Checkins = () => {
       <button onClick={e => exportState()}>Export</button>
       <button onClick={e => importState()}>Import</button>
 
+      <div>
+        <label>
+          <span>Play 8-hour alert?</span>
+          <input type="checkbox" checked={shouldPlayAlert} onChange={toggleShouldPlayAlert} />
+        </label>
+      </div>
+
       {
-        targetMet()
+        targetMet() && shouldPlayAlert
           ? <iframe title='drugz' width='560' height='315' src='https://www.youtube.com/embed/olKXXF6iw2s?start=30&autoplay=1' frameBorder='0' allow='autoplay; encrypted-media' allowFullScreen />
           : null
       }

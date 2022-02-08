@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { createContainer } from "unstated-next"
 
 const Goals = createContainer(() => {
@@ -21,7 +21,7 @@ const Goals = createContainer(() => {
   const setGoalsStr = e => _setGoalsStr(localStorage.goals = e.target.value)
 
   const getGoals = () => {
-    const lines = goalsStr.split("\n")
+    const lines = goalsStr.split("\n").filter(l => l.startsWith("- "))
     return lines.map(line => {
       const [percentStr, project] = line.split(" ").slice(1)
       const percentage = parseFloat(percentStr) / 100.0
@@ -30,8 +30,9 @@ const Goals = createContainer(() => {
     }).sort((a, b) => b.targetHrs - a.targetHrs)
   }
 
-  const getGoalMap = () => Object.fromEntries(
-    getGoals().map(_ => [_.project, _]))
+  const goals = useMemo(getGoals, [goalsStr])
+
+  const getGoalMap = () => Object.fromEntries(goals.map(_ => [_.project, _]))
 
   const adjustSelectedWeek = weeks => {
     const newDate = new Date(selectedWeek)
@@ -42,6 +43,14 @@ const Goals = createContainer(() => {
   const backOneWeek = () => adjustSelectedWeek(-1)
   const forwardOneWeek = () => adjustSelectedWeek(1)
 
+  const createNewGoal = (newGoal) => {
+    if (newGoal[0] === '#') {
+      setGoalsStr({
+        target: { value: `${goalsStr}\n- 0% ${newGoal}` },
+      })
+    }
+  }
+
   return {
     baseHours,
     setBaseHours,
@@ -51,7 +60,8 @@ const Goals = createContainer(() => {
     backOneWeek,
     forwardOneWeek,
     getGoalMap,
-    getGoals
+    goals,
+    createNewGoal,
   }
 
 })

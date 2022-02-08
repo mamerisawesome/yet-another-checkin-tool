@@ -28,12 +28,12 @@ const Checkins = () => {
     toggleShouldPlayAlert,
   } = CheckinsState.useContainer()
 
-  const { getGoals, goalsStr, setGoalsStr } = GoalsState.useContainer()
+  const { goals, createNewGoal } = GoalsState.useContainer()
 
   // load the goals once and avoid state refresh
   const currentGoals = useMemo(
-    () => getGoals().map(({ project }) => ({ label: project, value: project })),
-    [getGoals()]
+    () => goals.map(({ project }) => ({ label: project, value: project })),
+    [goals]
   )
 
   const projectRef = useRef()
@@ -113,17 +113,7 @@ const Checkins = () => {
     setState(JSON.parse(window.prompt('Enter state here:')))
   }
 
-  const createNewGoal = (newGoal) => {
-    if (newGoal[0] === '#') {
-      setGoalsStr({
-        target: { value: `${goalsStr}\n- 0% ${newGoal}` },
-      })
-      projectRef.current.select.onChange(
-        { label: newGoal, value: newGoal },
-        { action: 'select-option' }
-      )
-    }
-  }
+
 
   return (
 
@@ -150,7 +140,13 @@ const Checkins = () => {
           styles={{ input: (styles) => ({ ...styles,  height: '20px' }) }}
           options={currentGoals}
           ref={projectRef}
-          onCreateOption={createNewGoal}
+          onCreateOption={(newGoal) => {
+            createNewGoal(newGoal)
+            projectRef.current.select.onChange(
+              { label: newGoal, value: newGoal },
+              { action: 'select-option' }
+            )
+          }}
           isValidNewOption={(inputVal) => inputVal[0] === '#'}
           onKeyDown={(e) => getInputRef(projectRef).value[0] !== '#' && handleKeyPress(e)}
           placeholder='#project / out / break / lunch / whatever'

@@ -23,7 +23,7 @@
   "include": [
     "src/components",
     "src/constants",
-    "src/index.d.ts"
+    "src/globals.d.ts"
   ],
   "exclude": [
     "src/*.js",

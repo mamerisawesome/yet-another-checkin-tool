@@ -1,7 +1,6 @@
-import { Colors } from "../../constants";
-import Goals from '../../state/Goals';
-import Checkins from '../../state/Checkins';
-import styled from "styled-components";
+import styled from 'styled-components';
+
+import { Colors } from '../../constants';
 
 type Goal = {
   targetHrs: number;

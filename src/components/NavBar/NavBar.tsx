@@ -5,15 +5,14 @@ import { faMusic } from '@fortawesome/free-solid-svg-icons';
 
 import logo from '../../assets/logo.png';
 import { BoxShadow, Colors, getSize } from '../../constants';
-import CheckinsState from '../../state/Checkins';
 import ToggleButton from '../ToggleButton';
 
-const NavBar = () => {
-  const {
-    shouldPlayAlert,
-    toggleShouldPlayAlert,
-  } = CheckinsState.useContainer();
+type Props = {
+  shouldPlayAlert: boolean;
+  toggleShouldPlayAlert: () => void;
+};
 
+const NavBar = ({ shouldPlayAlert, toggleShouldPlayAlert }: Props) => {
   return (
     <Container>
       <Name>

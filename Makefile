@@ -15,3 +15,6 @@ dev: run #> Alias of `run`
 
 build: #> Build files
 	yarn run build
+
+build-ts: #> Build TypeScript files
+	yarn run build:ts

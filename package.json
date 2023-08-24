@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "start": "tsc -w & react-scripts start",
-    "build": "tsc & react-scripts build",
+    "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "build:ts": "tsc -w"
+    "build:ts": "tsc"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.4.2",

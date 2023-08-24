@@ -1,4 +1,4 @@
-.PHONY: run dev
+.PHONY: help init run dev build
 .DEFAULT: help
 
 help: #> Help message
@@ -9,9 +9,9 @@ init: #> Install libraries
 	yarn install
 
 run: #> Start the application in local
-	npm start
+	yarn run start
 
 dev: run #> Alias of `run`
 
 build: #> Build files
-	npm run build
+	yarn run build

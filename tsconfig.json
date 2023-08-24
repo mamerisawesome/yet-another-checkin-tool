@@ -25,5 +25,10 @@
     "src/constants",
     "src/index.d.ts"
   ],
-  "exclude": ["src/*.js"]
+  "exclude": [
+    "src/*.js",
+    "src/state/*.js",
+    "build",
+    "node_modules"
+  ]
 }

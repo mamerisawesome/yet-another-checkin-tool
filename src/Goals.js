@@ -1,37 +1,69 @@
-import React from 'react'
+import React from 'react';
+import styled from 'styled-components';
 
-import State from './state/Goals'
+import Input from './components/Input';
+import Textarea from './components/Textarea';
+import { getSize } from './constants';
+import State from './state/Goals';
 
 const Goals = () => {
-
   const {
     baseHours,
     setBaseHours,
     goalsStr,
     setGoalsStr,
-    // selectedWeek,
-    // backOneWeek,
-    // forwardOneWeek,
   } = State.useContainer()
 
   return (
-    <div>
-      {/* <div>Week (Monday):</div> */}
-      {/* <div> */}
-      {/*   <button onClick={backOneWeek}>&lt;</button> */}
-      {/*   <input value={selectedWeek} disabled={true} /> */}
-      {/*   <button onClick={forwardOneWeek}>&gt;</button> */}
-      {/* </div> */}
-      <h1>Weekly Goals</h1>
-      <p>
-        This affects the values displayed in the <strong>Dashboard</strong>.
-      </p>
-      <div>Base hours:</div>
-      <input value={baseHours} onChange={setBaseHours} type="number" min="0" step="1" />
-      <div>Input goals:</div>
-      <textarea value={goalsStr} onChange={setGoalsStr} placeholder="Put here the bullet points of your weekly goals as sent by Heartbeat" />
-    </div>
+    <Container>
+      <div>
+        <h1>Weekly Goals</h1>
+        <p>
+          This affects the values displayed in the <strong>Dashboard</strong>.
+        </p>
+      </div>
+      <Section>
+        <label htmlFor="hours-input">
+          <b>Base hours</b>
+        </label>
+        <StyledInput id="hours-input" value={baseHours} onChange={setBaseHours} type="number" min="0" step="1" />
+      </Section>
+      <Section>
+        <label htmlFor="goals-input">
+          <b>Input goals</b>
+        </label>
+        <StyledTextarea
+          id="goals-input"
+          value={goalsStr}
+          onChange={setGoalsStr}
+          placeholder="Put here the bullet points of your weekly goals as sent by AnaTMy"
+        />
+      </Section>
+    </Container>
   )
 }
+
+const Container = styled.div`
+  grid-area: goals;
+  display: flex;
+  flex-direction: column;
+  gap: ${getSize('* 2')};
+`;
+
+const Section = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${getSize('/ 2')};
+  padding: ${getSize('/ 2')};
+`;
+
+const StyledInput = styled(Input)`
+  width: auto;
+`;
+
+const StyledTextarea = styled(Textarea)`
+  width: auto;
+  height: ${getSize('* 20')};
+`;
 
 export default Goals

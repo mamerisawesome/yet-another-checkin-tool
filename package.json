@@ -2,21 +2,34 @@
   "name": "checkin",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "start": "tsc -w & react-scripts start",
+    "build": "tsc & react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "build:ts": "tsc -w"
+  },
   "dependencies": {
-    "react": "^16.3.2",
-    "react-dom": "^16.3.2",
-    "react-scripts": "1.1.4",
-    "react-select": "^4.3.0",
+    "@fortawesome/fontawesome-svg-core": "^6.4.2",
+    "@fortawesome/free-regular-svg-icons": "^6.4.2",
+    "@fortawesome/free-solid-svg-icons": "^6.4.2",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "font-awesome": "^4.7.0",
+    "react-select": "4.3.1",
     "styled-components": "^5.2.1",
     "unstated-next": "^1.1.0"
   },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+  "devDependencies": {
+    "@types/react": "^18.2.20",
+    "@types/react-dom": "^18.2.7",
+    "@types/react-select": "^5.0.1",
+    "@types/styled-components": "^5.1.26",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "1.1.4",
+    "typescript": "^5.1.6"
   },
-  "homepage": "https://syk0saje.gitlab.io/checkin",
+  "homepage": "/",
   "browserslist": {
     "production": [
       ">0.2%",

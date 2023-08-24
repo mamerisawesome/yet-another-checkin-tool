@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { createContainer } from "unstated-next"
 import { useInterval } from './hooks'
+import { ANNYEONG_SOUND } from '../constants'
 
 const Checkins = createContainer(() => {
-
-  const adjustForTimezone = (date:Date):Date => {
-    const timeOffsetInMS:number = date.getTimezoneOffset() * 60000;
+  const adjustForTimezone = (date) => {
+    const timeOffsetInMS = date.getTimezoneOffset() * 60000;
     date.setTime(date.getTime() - timeOffsetInMS);
     return date
   }
@@ -102,7 +102,7 @@ const Checkins = createContainer(() => {
   const runningHours = () => totalHours() + pendingHours()
 
   const celebrate = () => {
-    (new Audio('https://syk0saje.gitlab.io/junk/alvot/audio/annyeong.mp3')).play()
+    (new Audio(ANNYEONG_SOUND)).play()
     // alert("You've logged 8 hours today! \\o/ Go buy some drugs!");
   }
 

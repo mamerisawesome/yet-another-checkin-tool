@@ -1,10 +1,12 @@
 import React from 'react'
+import styled from 'styled-components';
 
+import Table from './components/Table'
+import ProgressBar from './components/ProgressBar'
 import Goals from './state/Goals'
 import Checkins from './state/Checkins'
 
 const Dashboard = () => {
-
   const {getGoalMap, selectedWeek} = Goals.useContainer()
   const {
     entries,
@@ -12,19 +14,6 @@ const Dashboard = () => {
     adjustForTimezone,
     isLogged
   } = Checkins.useContainer()
-
-  const getBar = goal => {
-    const actualHours = getActualHours(goal)
-    const {targetHrs} = goal
-
-    return (
-      <div style={{width: (10 * targetHrs), backgroundColor: 'white', border: '1px solid black'}}>
-        <div style={{width: (10 * actualHours), backgroundColor: 'orange'}}>
-          {getPercentRendered(goal)}%
-        </div>
-      </div>
-    )
-  }
 
   const getWeekDates = week => {
     const dates = []
@@ -66,10 +55,11 @@ const Dashboard = () => {
     return total.toFixed(5)
   }
 
-  const getPercentRendered = goal => {
-    const actualHours = getActualHours(goal)
-    const {targetHrs} = goal
-    return (actualHours / targetHrs * 100).toFixed(2)
+  const getPercentRendered = (goal) => {
+    const actualHours = getActualHours(goal);
+    const { targetHrs } = goal;
+
+    return (actualHours / targetHrs * 100).toFixed(2);
   }
 
   const projectsWorkedOn = [...new Set(getWeekCheckins(selectedWeek).map(
@@ -80,10 +70,10 @@ const Dashboard = () => {
   }
 
   return (
-    <div>
+    <Container>
       <h1>Dashboard</h1>
       <p>This information is aggregated for the current week.</p>
-      <table>
+      <StyledTable>
         <tbody>
           <tr>
             <th>Goal</th>
@@ -101,14 +91,32 @@ const Dashboard = () => {
                 <td>{actualHours}</td>
                 <td>{goal.targetHrs}</td>
                 <td>{remainingHours}</td>
-                <td>{getBar(goal)}</td>
+                <td>
+                  <ProgressBar
+                    actualHours={actualHours}
+                    goal={goal}
+                    progressPercent={getPercentRendered(goal)}
+                  />
+                </td>
               </tr>
             )
           })}
         </tbody>
-      </table>
-    </div>
+      </StyledTable>
+    </Container>
   )
-}
+};
 
-export default Dashboard
+const Container = styled.div`
+  grid-area: dashboard;
+`;
+
+const StyledTable = styled(Table)`
+  width: 100%;
+
+  & td:last-child {
+    width: 200px;
+  }
+`;
+
+export default Dashboard;

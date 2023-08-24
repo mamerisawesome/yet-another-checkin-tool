@@ -1,5 +1,9 @@
 # See https://help.github.com/ignore-files/ for more about ignoring files.
 
+# js generated components
+/src/components/*/*.js
+/src/constants/*.js
+
 # dependencies
 /node_modules
 

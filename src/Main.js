@@ -4,22 +4,33 @@ import styled from 'styled-components';
 import './App.css';
 
 import NavBar from './components/NavBar';
+import CheckinsState from './state/Checkins';
 import Goals from './Goals';
 import Checkins from './Checkins';
 import Dashboard from './Dashboard';
 import { BoxShadow, Colors, DefaultMediaBreakpoint, getSize } from './constants';
 
-const Main = () => (
-  <Container>
-    <NavBar />
+const Main = () => {
+  const {
+    shouldPlayAlert,
+    toggleShouldPlayAlert,
+  } = CheckinsState.useContainer();
 
-    <Sections>
-      <Goals />
-      <Checkins />
-      <Dashboard />
-    </Sections>
-  </Container>
-);
+  return (
+    <Container>
+      <NavBar
+        shouldPlayAlert={shouldPlayAlert}
+        toggleShouldPlayAlert={toggleShouldPlayAlert}
+      />
+
+      <Sections>
+        <Goals />
+        <Checkins />
+        <Dashboard />
+      </Sections>
+    </Container>
+  );
+};
 
 const Container = styled.div`
   width: 100%;

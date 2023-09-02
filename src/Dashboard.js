@@ -1,12 +1,15 @@
 import React from 'react'
 import styled from 'styled-components';
 
+import Box from './components/Box'
 import Table from './components/Table'
 import ProgressBar from './components/ProgressBar'
 import Goals from './state/Goals'
 import Checkins from './state/Checkins'
+import Config from './state/Config';
 
 const Dashboard = () => {
+  const { shouldShowDashboard } = Config.useContainer();
   const {getGoalMap, selectedWeek} = Goals.useContainer()
   const {
     entries,
@@ -70,7 +73,7 @@ const Dashboard = () => {
   }
 
   return (
-    <Container>
+    <Container isHidden={!shouldShowDashboard}>
       <h1>Dashboard</h1>
       <p>This information is aggregated for the current week.</p>
       <StyledTable>
@@ -107,7 +110,7 @@ const Dashboard = () => {
   )
 };
 
-const Container = styled.div`
+const Container = styled(Box)`
   grid-area: dashboard;
 `;
 

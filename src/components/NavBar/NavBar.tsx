@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMusic } from '@fortawesome/free-solid-svg-icons';
+import { faBarsProgress, faMusic } from '@fortawesome/free-solid-svg-icons';
 
 import logo from '../../assets/logo.png';
 import { BoxShadow, Colors, getSize } from '../../constants';
@@ -10,9 +10,16 @@ import ToggleButton from '../ToggleButton';
 type Props = {
   shouldPlayAlert: boolean;
   toggleShouldPlayAlert: () => void;
+  shouldShowGoalsAndDashboard: boolean;
+  toggleShouldShowGoalsAndDashboard: () => boolean;
 };
 
-const NavBar = ({ shouldPlayAlert, toggleShouldPlayAlert }: Props) => {
+const NavBar = ({
+  shouldPlayAlert,
+  shouldShowGoalsAndDashboard,
+  toggleShouldPlayAlert,
+  toggleShouldShowGoalsAndDashboard,
+}: Props) => {
   return (
     <Container>
       <Name>
@@ -21,6 +28,14 @@ const NavBar = ({ shouldPlayAlert, toggleShouldPlayAlert }: Props) => {
         <SubTitle>Yet Another Checkin Tool</SubTitle>
       </Name>
       <Actions>
+        <ToggleButton
+          title="Show goals and dashboard?"
+          isChecked={shouldShowGoalsAndDashboard}
+          onClick={toggleShouldShowGoalsAndDashboard}
+        >
+          <FontAwesomeIcon icon={faBarsProgress} />
+        </ToggleButton>
+
         <ToggleButton title="Play 8-hour alert?" isChecked={shouldPlayAlert} onClick={toggleShouldPlayAlert}>
           <FontAwesomeIcon icon={faMusic} />
         </ToggleButton>

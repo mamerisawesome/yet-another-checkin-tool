@@ -7,6 +7,7 @@ const StyledInput = styled.input`
   color: ${Colors.black};
 
   height: ${getSize('* 4')};
+  width: fill-available;
   padding: 0 ${getSize('* 2')};
   font-size: ${DefaultFontSize};
 

@@ -1,10 +1,10 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import './App.css';
 
 import NavBar from './components/NavBar';
-import CheckinsState from './state/Checkins';
+import Config from './state/Config';
 import Goals from './Goals';
 import Checkins from './Checkins';
 import Dashboard from './Dashboard';
@@ -13,17 +13,21 @@ import { BoxShadow, Colors, DefaultMediaBreakpoint, getSize } from './constants'
 const Main = () => {
   const {
     shouldPlayAlert,
+    shouldShowGoalsAndDashboard,
     toggleShouldPlayAlert,
-  } = CheckinsState.useContainer();
+    toggleShouldShowGoalsAndDashboard,
+  } = Config.useContainer();
 
   return (
     <Container>
       <NavBar
         shouldPlayAlert={shouldPlayAlert}
         toggleShouldPlayAlert={toggleShouldPlayAlert}
+        shouldShowGoalsAndDashboard={shouldShowGoalsAndDashboard}
+        toggleShouldShowGoalsAndDashboard={toggleShouldShowGoalsAndDashboard}
       />
 
-      <Sections>
+      <Sections isHidden={!shouldShowGoalsAndDashboard}>
         <Goals />
         <Checkins />
         <Dashboard />
@@ -36,6 +40,16 @@ const Container = styled.div`
   width: 100%;
 `;
 
+const hiddenGoalsAndDashboardStyle = css`
+  grid-template-columns: 0px 1fr;
+  grid-template-rows: 0px 1fr;
+`;
+
+const hiddenGoalsAndDashboardMobileStyle = css`
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 0px 0px;
+`;
+
 const Sections = styled.div`
   display: grid;
   grid-template-columns: 1fr 2fr;
@@ -43,6 +57,8 @@ const Sections = styled.div`
   grid-template-areas:
     "goals checkins"
     "dashboard checkins";
+
+  transition: 500ms all;
 
   margin: 20px;
 
@@ -54,6 +70,8 @@ const Sections = styled.div`
     box-shadow: ${BoxShadow.card};
   }
 
+  ${(props) => props.isHidden ? hiddenGoalsAndDashboardStyle : ''}
+
   ${DefaultMediaBreakpoint} {
     grid-template-columns: 1fr;
     grid-template-rows: auto;
@@ -62,6 +80,8 @@ const Sections = styled.div`
       "checkins"
       "goals"
       "dashboard";
+
+    ${(props) => props.isHidden ? hiddenGoalsAndDashboardMobileStyle : ''}
 
     margin: 0;
 

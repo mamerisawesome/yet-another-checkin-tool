@@ -37,7 +37,7 @@ const Container = styled(Button)<{ isChecked: boolean }>`
   }
 
   &, &:hover {
-    filter: ${(props) => props.isChecked ? 'brightness(0.9)' : 'brightness(1)'};
+    filter: ${(props) => props.isChecked ? 'brightness(0.8)' : 'brightness(1)'};
   }
 `
 

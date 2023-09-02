@@ -1,21 +1,25 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import Box from './components/Box';
 import Input from './components/Input';
 import Textarea from './components/Textarea';
 import { getSize } from './constants';
 import State from './state/Goals';
+import Config from './state/Config';
 
 const Goals = () => {
+  const { shouldShowGoals } = Config.useContainer();
+
   const {
     baseHours,
     setBaseHours,
     goalsStr,
     setGoalsStr,
-  } = State.useContainer()
+  } = State.useContainer();
 
   return (
-    <Container>
+    <Container isHidden={!shouldShowGoals}>
       <div>
         <h1>Weekly Goals</h1>
         <p>
@@ -43,7 +47,7 @@ const Goals = () => {
   )
 }
 
-const Container = styled.div`
+const Container = styled(Box)`
   grid-area: goals;
   display: flex;
   flex-direction: column;

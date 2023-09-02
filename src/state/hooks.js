@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 export const useInterval = (callback, delay) => {
   const savedCallback = useRef()
@@ -19,3 +19,13 @@ export const useInterval = (callback, delay) => {
     }
   }, [delay])
 }
+
+export const useLocalStorage = (storageItem, valueOrCallback) => {
+  const [stateValue, dispatch] = useState(typeof valueOrCallback === 'function' ? valueOrCallback() : valueOrCallback);
+
+  useEffect(() => {
+    localStorage[storageItem] = stateValue;
+  }, [stateValue]);
+
+  return [stateValue, dispatch];
+};

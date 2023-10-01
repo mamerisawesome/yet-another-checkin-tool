@@ -24,7 +24,7 @@ const NavBar = ({
     <Container>
       <Name>
         <Logo src={logo} />
-        <Title>YECT</Title>
+        <Title>YACT</Title>
         <SubTitle>Yet Another Checkin Tool</SubTitle>
       </Name>
       <Actions>

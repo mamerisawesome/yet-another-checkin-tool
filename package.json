@@ -29,7 +29,6 @@
     "react-scripts": "1.1.4",
     "typescript": "^5.1.6"
   },
-  "homepage": "https://syk0saje.gitlab.io/checkin",
   "browserslist": {
     "production": [
       ">0.2%",

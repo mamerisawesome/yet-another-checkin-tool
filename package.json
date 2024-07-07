@@ -1,6 +1,6 @@
 {
-  "name": "checkin",
-  "version": "0.1.0",
+  "name": "yet-another-checkin-tool",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "start": "tsc -w & react-scripts start",
